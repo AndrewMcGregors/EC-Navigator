@@ -1,0 +1,38 @@
+VPATH = .   WinRing0 Ols
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+CFLAGS = -O3 -march=i686 -fomit-frame-pointer -mstackrealign
+
+OBJ = dll-init.o dll-load.o ECCpuUsage.o ECNavigator.o ECModels.o ECNvidia.o ECOlsEx.o  ECFanController.o ECBackground.o ECMessage.o ECNavigator.res
+
+OLSOBJ = Ols\OlsDll.o Ols\Driver.o Ols\OlsApi.o Ols\stdafx.o Ols\OlsDll.res
+
+LIBS = -mwindows -lwinmm -ldinput -lstdc++ -liphlpapi -lm
+
+ECNavigator.exe:       $(OLSOBJ) $(OBJ)
+		 $(CC) $(OLSOBJ) $(OBJ) -o "ECNavigator.exe" $(LIBS)
+
+
+all : ECNavigator.exe
+
+clean :
+	rm *.o
+	rm *.exe
+	rm *.res
+
+ols\%.o : ols\%.c
+	$(CC) $(CFLAGS) -c $<
+
+EC%.o : EC%.c
+	$(CC) $(CFLAGS) -c $<
+
+EC%.o : EC%.cc
+	$(CPP) $(CFLAGS) -c $<
+
+ECNavigator.res: ECNavigator.rc
+	$(WINDRES) -i ECNavigator.rc --input-format=rc -o ECNavigator.res -O coff -v
+
+Ols\OlsDll.res: Ols\OlsDll.rc
+	$(WINDRES) -i Ols\OlsDll.rc --input-format=rc -o Ols\OlsDll.res -O coff -v
+

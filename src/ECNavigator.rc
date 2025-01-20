@@ -1,0 +1,176 @@
+#include <windows.h>
+#include <winuser.h>
+#include "resource.h"
+
+#ifndef UPDOWN_CLASS
+#define UPDOWN_CLASS L"msctls_updown32"
+#endif
+
+#ifndef PROGRESS_CLASS
+#define PROGRESS_CLASS L"msctls_progress32"
+#endif
+
+#ifndef STATUS_CLASS
+#define STATUS_CLASS L"msctls_statusbar32"
+#endif
+
+MainMenu MENU DISCARDABLE
+BEGIN
+        POPUP "&File"
+        BEGIN
+                //MENUITEM "L&oad Ols",         	IDM_LOAD_OLS
+                MENUITEM "S&ettings",       		IDM_SETTINGS
+                MENUITEM "&Load Nvapi",        	  	IDM_LOAD_NVAPI
+                MENUITEM SEPARATOR                
+                MENUITEM "E&xit EC Navigator",		IDM_EXIT
+        END
+        POPUP "&Info"
+        BEGIN
+                //MENUITEM "&Cpu info",			IDM_CPU_INFO
+                MENUITEM "&Pci info",			IDM_PCI_INFO
+                MENUITEM "&EC  info",			IDM_EC_INFO
+                MENUITEM "&Nvidia info",		IDM_NVAPI_INFO
+        END
+END
+
+#define CB_FLAGS     CBS_DROPDOWN    | WS_TABSTOP | WS_VSCROLL			//COMBOBOX
+#define CBUT_FLAGS   BS_AUTOCHECKBOX | WS_TABSTOP | WS_BORDER | BS_LEFTTEXT | BS_VCENTER
+#define TB_FLAGS     SS_LEFT | WS_BORDER				//TEXTBOX
+#define ETEXT_FLAGS  WS_TABSTOP | ES_MULTILINE | WS_VSCROLL
+
+
+
+settings_dlg DIALOGEX 0, 0, 285, 250
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CAPTION | WS_POPUP | WS_SYSMENU | WS_VISIBLE
+CAPTION "Settings Table"
+FONT 8, "MS Sans Serif"
+//FONT 8, "Courier New"
+BEGIN
+    CONTROL       "XXX",	IDC_BKGRND,	 "Static", SS_BITMAP, 0, 0, 285, 250
+
+    CTEXT        "Temperature",	IDC_STATIC,	  10, 10, 80,  20, WS_BORDER | WS_SIZEBOX
+    CTEXT        "Fan",		IDC_STATIC,	 100, 10, 80,  20, WS_BORDER | WS_SIZEBOX
+    CTEXT        "Battery",	IDC_STATIC,      190, 10, 80,  20, WS_BORDER | WS_SIZEBOX
+
+    LTEXT        " Temp1",	IDC_STATIC,       15, 40, 30,  14, TB_FLAGS
+    COMBOBOX 		   	IDC_CB_TEMP1, 	  50, 40, 40,  60, CB_FLAGS 
+
+    CONTROL  	 " double",	IDC_CBUT_TEMP1_DBL, "Button", CBUT_FLAGS, 50, 60, 40,12
+
+    LTEXT        " Temp2",	IDC_STATIC,       15, 80, 30,  14, TB_FLAGS
+    COMBOBOX 		   	IDC_CB_TEMP2, 	  50, 80, 40,  60, CB_FLAGS 
+
+    CONTROL  	 " double",	IDC_CBUT_TEMP2_DBL, "Button", CBUT_FLAGS, 50,100, 40,12
+
+    LTEXT        " Temp3",	IDC_STATIC,       15,120, 30,  14, TB_FLAGS
+    COMBOBOX 		   	IDC_CB_TEMP3, 	  50,120, 40,  60, CB_FLAGS 
+
+    CONTROL  	 " double",	IDC_CBUT_TEMP3_DBL, "Button", CBUT_FLAGS, 50,140, 40,12
+
+    LTEXT        " Fan1",	IDC_STATIC,       105, 40, 30,  12, TB_FLAGS
+    COMBOBOX 		   	IDC_CB_FAN1, 	  140, 40, 41,  80, CB_FLAGS
+
+    CONTROL  	 " double",	IDC_CBUT_FAN1_DBL, "Button", CBUT_FLAGS, 140, 60, 40,12
+
+    LTEXT        " Fan2",	IDC_STATIC,      105, 80, 30,  12, TB_FLAGS
+    COMBOBOX 		   	IDC_CB_FAN2, 	 140, 80, 41,  80, CB_FLAGS 
+
+    CONTROL  	 " double",	IDC_CBUT_FAN2_DBL, "Button", CBUT_FLAGS, 140,100, 40,12
+
+    LTEXT        " BatV",	IDC_STATIC,      195, 40, 30,  14, TB_FLAGS
+    COMBOBOX 		   	IDC_CB_BATV, 	 230, 40, 40,  60, CB_FLAGS 
+
+    //CONTROL  	 " double",	IDC_CBUT_BATV_DBL, "Button", CBUT_FLAGS, 230, 60, 40,12
+
+    LTEXT        " BatA",	IDC_STATIC,      195, 80, 30,  14, TB_FLAGS
+    COMBOBOX 		   	IDC_CB_BATA, 	 230, 80, 40,  60, CB_FLAGS 
+
+    //CONTROL  	 " double",	IDC_CBUT_BATA_DBL, "Button", CBUT_FLAGS, 230,100, 40,12
+
+    LTEXT        " BatAM",	IDC_STATIC,      195,120, 30,  14, TB_FLAGS
+    COMBOBOX 		   	IDC_CB_BATAM, 	 230,120, 40,  60, CB_FLAGS 
+
+    //CONTROL  	 " double",	IDC_CBUT_BATAM_DBL, "Button", CBUT_FLAGS, 230,140, 40,12
+
+    LTEXT        " BatAD",	IDC_STATIC,      195,160, 30,  14, TB_FLAGS
+    COMBOBOX 		   	IDC_CB_BATAD, 	 230,160, 40,  60, CB_FLAGS 
+
+    //CONTROL  	 " double",	IDC_CBUT_BATAD_DBL, "Button", CBUT_FLAGS, 230,180, 40,12
+
+    COMBOBOX 		   	IDC_CB_MODELS,    80,220,125,  80, CB_FLAGS
+
+    PUSHBUTTON   "Update", 	IDOK,	     	  15,220, 50,  14, WS_TABSTOP
+    PUSHBUTTON   "Quit",   	IDCANCEL,	 220,220, 50,  14, WS_TABSTOP
+END
+
+ 
+
+
+
+info_dlg DIALOGEX 0, 0, 330, 270
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CAPTION | WS_POPUP | WS_SYSMENU | WS_VISIBLE
+CAPTION "Info Table"
+//FONT 8, "Courier New"
+FONT 8, "MS Sans Serif"
+//FONT 8, "Verdana"
+BEGIN
+    CONTROL         "XXX", IDC_BKGRND, "Static", SS_BITMAP, 0, 0, 320, 270
+
+    EDITTEXT 		   IDC_EDIT_INFO,	 10, 10,310, 210, ETEXT_FLAGS
+
+    PUSHBUTTON   "Update", IDOK,	 	100,240, 50,  14, WS_TABSTOP
+    PUSHBUTTON   "Quit",   IDCANCEL,	 	160,240, 50,  14, WS_TABSTOP
+END
+
+
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,0
+ FILEFLAGSMASK 0x17L
+
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+
+BEGIN
+    BLOCK "StringFileInfo"
+
+    BEGIN
+        BLOCK "040004b0"
+
+        BEGIN
+
+            VALUE "Comments", "No comment"
+            VALUE "CompanyName", "Andrew McGregor Productions"
+            VALUE "FileDescription", "An Embedded Controller viewer"
+            VALUE "FileVersion", "1.0.0.0"
+            VALUE "InternalName", "ECNavigator.exe"
+            VALUE "LegalCopyright", "Copyright 2024 Andrew McGregor"
+            VALUE "OriginalFilename", "ECNavigator.exe"
+            VALUE "ProductName", "EC Navigator"
+            VALUE "ProductVersion", "1.0.0.0"
+
+        END
+    END
+
+    BLOCK "VarFileInfo"
+
+    BEGIN
+
+        VALUE "Translation", 0x400, 1200
+
+    END
+END
+
+
+
