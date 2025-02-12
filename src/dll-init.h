@@ -27,9 +27,6 @@ NvStatus (*NvAPI_Unload)();
 
 
 
-void dll_init_all();
-void dll_close_all();
-
 void nvapi_init_all(HWND hwnd);
 void nvapi_close_all();
 
