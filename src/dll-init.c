@@ -65,18 +65,6 @@ extern BOOL NvAPI_Loaded;
 
 
 /* Function tables */
-/*
-static dllimport_t dll_imports[] = 
-{
-
-  { "NvAPI_Initialize",			&NvAPI_Initialize		},
-  { "NvAPI_EnumPhysicalGPUs",		&NvAPI_EnumPhysicalGPUs		},
-  { "NvAPI_GPU_GetThermalSettings",	&NvAPI_GPU_GetThermalSettings	},
-  { "NvAPI_GetInterfaceVersionString",	&NvAPI_GetInterfaceVersionString},
-
-  { NULL,				NULL			}
-};
-*/
 
 static nvapiimport_t nvapi_import_table[] = 
 {
@@ -99,43 +87,6 @@ static nvapiimport_t nvapi_import_table[] =
 };
 
 /* Functions */
-
-
-/*
-void dll_close_all()
-{
-
-    if (dll_handle != NULL) 
-    {
-	dynaload_close(dll_handle);
-	dll_handle = NULL;
-    }
-
-}
-
-
-void dll_init_all()
-{
-
-    dll_handle = dynaload_module(PATH_DLL, dll_imports);
-
-    if (dll_handle == NULL)
-    {
-	MessageBox(NULL, "DLL: unable to load.", PATH_DLL, MB_OK);
-	return;
-    }
-    else MessageBox(NULL, "DLL: Successfully loaded.", PATH_DLL, MB_OK);
-
-
-    if (NvAPI_Initialize() == NVSTATUS_OK)
-	    MessageBox(NULL, "Ok ", "DDL: Initialize ", MB_OK);
-    else    MessageBox(NULL, "Ko ", "DDL: Initialize ", MB_OK);
-
-
-}
-*/
-
-
 
 void nvapi_init_all(HWND hlistboxmsg)
 {
